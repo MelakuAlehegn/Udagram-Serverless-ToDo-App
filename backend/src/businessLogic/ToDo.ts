@@ -4,6 +4,9 @@ import {CreateTodoRequest} from "../requests/CreateTodoRequest";
 import {UpdateTodoRequest} from "../requests/UpdateTodoRequest";
 import {TodoUpdate} from "../models/TodoUpdate";
 import {ToDoAccess} from "../dataLayer/ToDoAccess";
+import { createLogger } from '../utils/logger'
+
+const logger = createLogger('Todos')
 
 const uuidv4 = require('uuid/v4');
 const toDoAccess = new ToDoAccess();
@@ -16,8 +19,9 @@ export async function getAllToDo(jwtToken: string): Promise<TodoItem[]> {
 export function createToDo(createTodoRequest: CreateTodoRequest, jwtToken: string): Promise<TodoItem> {
     const userId = parseUserId(jwtToken);
     const todoId =  uuidv4();
+    logger.info(todoId);
     const s3BucketName = process.env.S3_BUCKET_NAME;
-    
+    logger.info(s3BucketName);
     return toDoAccess.createToDo({
         userId: userId,
         todoId: todoId,
